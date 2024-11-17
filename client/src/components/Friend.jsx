@@ -18,7 +18,6 @@ const Friend = ({ friendId, name, subtitle, userPicturePath }) => {
   const primaryDark = palette.primary.dark;
   const main = palette.neutral.main;
   const medium = palette.neutral.medium;
-
   const isFriend = friends.find((friend) => friend._id === friendId);
 
   const patchFriend = async () => {
@@ -37,7 +36,19 @@ const Friend = ({ friendId, name, subtitle, userPicturePath }) => {
   };
 
   return (
-    <FlexBetween>
+    <FlexBetween
+      sx={{
+        backgroundColor: palette.background.paper,
+        padding: "1rem",
+        borderRadius: "0.75rem",
+        boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.1)",
+        transition: "transform 0.3s ease, box-shadow 0.3s ease",
+        "&:hover": {
+          transform: "scale(1.02)",
+          boxShadow: "0px 6px 15px rgba(0, 0, 0, 0.2)",
+        },
+      }}
+    >
       <FlexBetween gap="1rem">
         <UserImage image={userPicturePath} size="55px" />
         <Box
@@ -45,33 +56,48 @@ const Friend = ({ friendId, name, subtitle, userPicturePath }) => {
             navigate(`/profile/${friendId}`);
             navigate(0);
           }}
+          sx={{
+            "&:hover": {
+              cursor: "pointer",
+            },
+          }}
         >
           <Typography
             color={main}
             variant="h5"
             fontWeight="500"
             sx={{
+              transition: "color 0.3s ease",
               "&:hover": {
-                color: palette.primary.light,
-                cursor: "pointer",
+                color: primaryLight,
               },
             }}
           >
             {name}
           </Typography>
-          <Typography color={medium} fontSize="0.75rem">
+          <Typography color={medium} fontSize="0.85rem" fontStyle="italic">
             {subtitle}
           </Typography>
         </Box>
       </FlexBetween>
+
       <IconButton
         onClick={() => patchFriend()}
-        sx={{ backgroundColor: primaryLight, p: "0.6rem" }}
+        sx={{
+          backgroundColor: isFriend ? primaryLight : palette.secondary.light,
+          p: "0.7rem",
+          boxShadow: "0px 2px 5px rgba(0, 0, 0, 0.15)",
+          transition: "background-color 0.3s ease, transform 0.3s ease",
+          "&:hover": {
+            backgroundColor: isFriend ? primaryDark : palette.secondary.dark,
+            transform: "scale(1.1)",
+          },
+        }}
       >
         {isFriend ? (
-          <PersonRemoveOutlined sx={{ color: primaryDark }} />
+          <PersonRemoveOutlined sx={{ color: "black" }} />
         ) : (
-          <PersonAddOutlined sx={{ color: primaryDark }} />
+          <PersonAddOutlined sx={{ color: "black" }} />
         )}
       </IconButton>
     </FlexBetween>

@@ -1,4 +1,4 @@
-import { Typography, useTheme } from "@mui/material";
+import { Typography, useTheme, Box } from "@mui/material";
 import FlexBetween from "components/FlexBetween";
 import WidgetWrapper from "components/WidgetWrapper";
 
@@ -9,27 +9,65 @@ const AdvertWidget = () => {
   const medium = palette.neutral.medium;
 
   return (
-    <WidgetWrapper>
-      <FlexBetween>
-        <Typography color={dark} variant="h5" fontWeight="500">
+    <WidgetWrapper
+      sx={{
+        p: "1.5rem",
+        boxShadow: "0 4px 10px rgba(0, 0, 0, 0.1)",
+        borderRadius: "1rem",
+      }}
+    >
+      <FlexBetween mb="1rem">
+        <Typography color={dark} variant="h5" fontWeight="600">
           Sponsored
         </Typography>
-        <Typography color={medium}>Create Ad</Typography>
+        <Typography
+          color={medium}
+          sx={{
+            cursor: "pointer",
+            "&:hover": { color: dark, textDecoration: "underline" },
+          }}
+        >
+          Create Ad
+        </Typography>
       </FlexBetween>
-      <img
-        width="100%"
-        height="auto"
-        alt="advert"
+
+      <Box
+        component="img"
         src="http://localhost:3001/assets/info4.jpeg"
-        style={{ borderRadius: "0.75rem", margin: "0.75rem 0" }}
+        alt="advert"
+        sx={{
+          width: "100%",
+          height: "auto",
+          borderRadius: "1rem",
+          mb: "1rem",
+          boxShadow: "0 4px 12px rgba(0, 0, 0, 0.2)",
+          transition: "transform 0.3s ease",
+          "&:hover": {
+            transform: "scale(1.02)",
+          },
+        }}
       />
-      <FlexBetween>
-        <Typography color={main}>MikaCosmetics</Typography>
-        <Typography color={medium}>mikacosmetics.com</Typography>
+
+      <FlexBetween mb="0.5rem">
+        <Typography color={main} variant="h6" fontWeight="500">
+          MikaCosmetics
+        </Typography>
+        <Typography
+          color={medium}
+          sx={{ cursor: "pointer", "&:hover": { color: dark } }}
+        >
+          mikacosmetics.com
+        </Typography>
       </FlexBetween>
-      <Typography color={medium} m="0.5rem 0">
-        Your pathway to stunning and immaculate beauty and made sure your skin
-        is exfoliating skin and shining like light.
+
+      <Typography
+        color={medium}
+        variant="body2"
+        lineHeight="1.5"
+        textAlign="justify"
+      >
+        Discover your pathway to stunning and immaculate beauty. Exfoliate,
+        refresh, and glow with MikaCosmetics!
       </Typography>
     </WidgetWrapper>
   );
