@@ -14,6 +14,7 @@ const PostsWidget = ({ userId, isProfile = false }) => {
       headers: { Authorization: `Bearer ${token}` },
     });
     const data = await response.json();
+    console.log("Fetched posts:", data); // Debug log
     dispatch(setPosts({ posts: data }));
   };
 
@@ -26,6 +27,7 @@ const PostsWidget = ({ userId, isProfile = false }) => {
       }
     );
     const data = await response.json();
+    console.log("Fetched user posts:", data); // Debug log
     dispatch(setPosts({ posts: data }));
   };
 
@@ -36,6 +38,11 @@ const PostsWidget = ({ userId, isProfile = false }) => {
       getPosts();
     }
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Check if posts is an array before calling map
+  if (!Array.isArray(posts)) {
+    return <div>No posts available</div>; // Handle non-array posts
+  }
 
   return (
     <>

@@ -60,13 +60,27 @@ const Form = () => {
   const navigate = useNavigate();
   const isNonMobile = useMediaQuery("(min-width:600px)");
 
+  // New custom color for the button and other elements
+  const customColor = "#FF4081"; // A bold pink color for a unique touch
+
   const handleSubmit = async (values, onSubmitProps) => {
     const url = `http://localhost:3001/auth/${pageType}`;
     const method = pageType === "login" ? "POST" : "POST";
-    const body =
-      pageType === "login"
-        ? JSON.stringify(values)
-        : new FormData().append("picture", values.picture);
+    let body;
+
+    if (pageType === "login") {
+      body = JSON.stringify(values);
+    } else {
+      const formData = new FormData();
+      formData.append("picture", values.picture);
+      formData.append("firstName", values.firstName);
+      formData.append("lastName", values.lastName);
+      formData.append("email", values.email);
+      formData.append("password", values.password);
+      formData.append("location", values.location);
+      formData.append("occupation", values.occupation);
+      body = formData;
+    }
 
     const response = await fetch(url, {
       method,
@@ -125,7 +139,7 @@ const Form = () => {
                     helperText={touched.firstName && errors.firstName}
                     InputProps={{
                       startAdornment: (
-                        <IconButton sx={{ color: palette.primary.main }}>
+                        <IconButton sx={{ color: customColor }}>
                           <PersonIcon />
                         </IconButton>
                       ),
@@ -144,7 +158,7 @@ const Form = () => {
                     helperText={touched.lastName && errors.lastName}
                     InputProps={{
                       startAdornment: (
-                        <IconButton sx={{ color: palette.primary.main }}>
+                        <IconButton sx={{ color: customColor }}>
                           <PersonIcon />
                         </IconButton>
                       ),
@@ -164,7 +178,7 @@ const Form = () => {
                     helperText={touched.location && errors.location}
                     InputProps={{
                       startAdornment: (
-                        <IconButton sx={{ color: palette.primary.main }}>
+                        <IconButton sx={{ color: customColor }}>
                           <LocationOnIcon />
                         </IconButton>
                       ),
@@ -184,7 +198,7 @@ const Form = () => {
                     helperText={touched.occupation && errors.occupation}
                     InputProps={{
                       startAdornment: (
-                        <IconButton sx={{ color: palette.primary.main }}>
+                        <IconButton sx={{ color: customColor }}>
                           <WorkIcon />
                         </IconButton>
                       ),
@@ -209,7 +223,7 @@ const Form = () => {
                     {({ getRootProps, getInputProps }) => (
                       <Box
                         {...getRootProps()}
-                        border={`2px dashed ${palette.primary.main}`}
+                        border={`2px dashed ${customColor}`}
                         p="1rem"
                         sx={{ "&:hover": { cursor: "pointer" } }}
                       >
@@ -240,7 +254,7 @@ const Form = () => {
                 helperText={touched.email && errors.email}
                 InputProps={{
                   startAdornment: (
-                    <IconButton sx={{ color: palette.primary.main }}>
+                    <IconButton sx={{ color: customColor }}>
                       <EmailIcon />
                     </IconButton>
                   ),
@@ -261,7 +275,7 @@ const Form = () => {
                 helperText={touched.password && errors.password}
                 InputProps={{
                   startAdornment: (
-                    <IconButton sx={{ color: palette.primary.main }}>
+                    <IconButton sx={{ color: customColor }}>
                       <LockIcon />
                     </IconButton>
                   ),
@@ -278,9 +292,9 @@ const Form = () => {
               sx={{
                 m: "2rem 0",
                 p: "1rem",
-                backgroundColor: palette.primary.main,
+                backgroundColor: customColor,
                 color: palette.background.alt,
-                "&:hover": { color: palette.primary.main },
+                "&:hover": { color: customColor },
               }}
             >
               {pageType === "login" ? "LOGIN" : "REGISTER"}
@@ -292,8 +306,8 @@ const Form = () => {
               }}
               sx={{
                 textDecoration: "underline",
-                color: palette.primary.main,
-                "&:hover": { cursor: "pointer", color: palette.primary.light },
+                color: customColor,
+                "&:hover": { cursor: "pointer", color: "#F50057" },
               }}
             >
               {pageType === "login"

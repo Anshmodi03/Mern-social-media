@@ -4,7 +4,15 @@ import {
   FavoriteOutlined,
   ShareOutlined,
 } from "@mui/icons-material";
-import { Box, Divider, IconButton, Typography, useTheme } from "@mui/material";
+import {
+  Box,
+  Divider,
+  IconButton,
+  Typography,
+  useTheme,
+  TextField,
+  Button,
+} from "@mui/material";
 import FlexBetween from "components/FlexBetween";
 import Friend from "components/Friend";
 import WidgetWrapper from "components/WidgetWrapper";
@@ -23,7 +31,8 @@ const PostWidget = ({
   likes,
   comments,
 }) => {
-  const [isComments, setIsComments] = useState(false);
+  const [isComments, setIsComments] = useState(true);
+  const [newComment, setNewComment] = useState(""); // State for new comment input
   const dispatch = useDispatch();
   const token = useSelector((state) => state.token);
   const loggedInUserId = useSelector((state) => state.user._id);
@@ -45,6 +54,34 @@ const PostWidget = ({
     });
     const updatedPost = await response.json();
     dispatch(setPost({ post: updatedPost }));
+  };
+
+  // Handle posting new comment
+  const postComment = async () => {
+    if (!newComment.trim()) return; // Avoid empty comments
+
+    // Send the new comment to the backend
+    await fetch(`http://localhost:3001/posts/${postId}/comment`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ userId: loggedInUserId, content: newComment }),
+    });
+
+    // Fetch the updated post with comments
+    const response = await fetch(`http://localhost:3001/posts/${postId}`, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    const updatedPost = await response.json();
+
+    // Dispatch the updated post with the new comment
+    dispatch(setPost({ post: updatedPost }));
+    setNewComment(""); // Clear the comment input field
   };
 
   return (
@@ -92,17 +129,48 @@ const PostWidget = ({
           <ShareOutlined />
         </IconButton>
       </FlexBetween>
+
       {isComments && (
         <Box mt="0.5rem">
-          {comments.map((comment, i) => (
-            <Box key={`${name}-${i}`}>
-              <Divider />
-              <Typography sx={{ color: main, m: "0.5rem 0", pl: "1rem" }}>
-                {comment}
-              </Typography>
-            </Box>
-          ))}
+          {comments.length > 0 ? (
+            comments.map((comment, i) => (
+              <Box key={`${name}-${i}`}>
+                <Divider />
+                <Typography sx={{ color: main, m: "0.5rem 0", pl: "1rem" }}>
+                  {comment.content}
+                </Typography>
+              </Box>
+            ))
+          ) : (
+            <Typography sx={{ color: main, m: "0.5rem 0", pl: "1rem" }}>
+              No comments yet.
+            </Typography>
+          )}
+
           <Divider />
+          <Box mt="1rem">
+            <TextField
+              fullWidth
+              variant="outlined"
+              label="Add a comment..."
+              value={newComment}
+              onChange={(e) => setNewComment(e.target.value)}
+              multiline
+              rows={3}
+              sx={{
+                borderRadius: "0.75rem",
+                padding: "0.5rem",
+              }}
+            />
+            <Button
+              onClick={postComment}
+              variant="contained"
+              color="primary"
+              sx={{ mt: "0.5rem" }}
+            >
+              Post Comment
+            </Button>
+          </Box>
         </Box>
       )}
     </WidgetWrapper>

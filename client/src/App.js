@@ -14,7 +14,7 @@ function App() {
   const isAuth = Boolean(token);
 
   return (
-    <div className="app">
+    <div className="app ">
       <BrowserRouter>
         <ThemeProvider theme={theme}>
           <CssBaseline />

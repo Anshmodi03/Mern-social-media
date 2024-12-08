@@ -39,25 +39,50 @@ const Navbar = () => {
   const commonMenu = (
     <>
       <Tooltip title="Toggle Dark/Light Mode" arrow>
-        <IconButton onClick={() => dispatch(setMode())}>
+        <IconButton
+          onClick={() => dispatch(setMode())}
+          sx={{
+            color: neutral.dark,
+            transition: "all 0.3s ease-in-out",
+            "&:hover": { backgroundColor: neutral.light },
+          }}
+        >
           {theme.palette.mode === "dark" ? <DarkMode /> : <LightMode />}
         </IconButton>
       </Tooltip>
 
       <Tooltip title="Messages" arrow>
-        <IconButton>
+        <IconButton
+          sx={{
+            color: neutral.dark,
+            transition: "all 0.3s ease-in-out",
+            "&:hover": { backgroundColor: neutral.light },
+          }}
+        >
           <Message />
         </IconButton>
       </Tooltip>
 
       <Tooltip title="Notifications" arrow>
-        <IconButton>
+        <IconButton
+          sx={{
+            color: neutral.dark,
+            transition: "all 0.3s ease-in-out",
+            "&:hover": { backgroundColor: neutral.light },
+          }}
+        >
           <Notifications />
         </IconButton>
       </Tooltip>
 
       <Tooltip title="Help" arrow>
-        <IconButton>
+        <IconButton
+          sx={{
+            color: neutral.dark,
+            transition: "all 0.3s ease-in-out",
+            "&:hover": { backgroundColor: neutral.light },
+          }}
+        >
           <Help />
         </IconButton>
       </Tooltip>
@@ -67,14 +92,16 @@ const Navbar = () => {
           value={fullName}
           sx={{
             backgroundColor: neutral.light,
-            width: "150px",
-            p: "0.25rem 1rem",
-            borderRadius: "5px",
+            width: "180px",
+            padding: "0.5rem 1rem",
+            borderRadius: "12px",
+            boxShadow: 1,
+            fontWeight: 600,
           }}
           input={<InputBase />}
         >
           <MenuItem value={fullName}>
-            <Typography>{fullName}</Typography>
+            <Typography fontWeight="bold">{fullName}</Typography>
           </MenuItem>
           <MenuItem onClick={() => dispatch(setLogout())}>Log Out</MenuItem>
         </Select>
@@ -83,27 +110,48 @@ const Navbar = () => {
   );
 
   return (
-    <FlexBetween padding="1rem 6%" backgroundColor={background.alt}>
-      <FlexBetween gap="1.5rem">
+    <FlexBetween
+      padding="1rem 5%"
+      backgroundColor={background.alt}
+      boxShadow={3}
+      sx={{
+        borderBottom: `2px solid ${neutral.light}`,
+        zIndex: 999,
+      }}
+    >
+      <FlexBetween gap="2rem">
         <Typography
           fontWeight="bold"
-          fontSize="clamp(1rem, 2rem, 2.25rem)"
+          fontSize="clamp(1.5rem, 2.5rem, 3rem)"
           color="primary"
           onClick={() => navigate("/home")}
-          sx={{ cursor: "pointer" }}
+          sx={{
+            cursor: "pointer",
+            transition: "transform 0.3s ease",
+            "&:hover": { transform: "scale(1.1)" },
+          }}
         >
-          Connectifys
+          Connectify
         </Typography>
         {isNonMobileScreens && (
           <FlexBetween
             backgroundColor={neutral.light}
-            borderRadius="10px"
-            gap="1rem"
-            padding="0.5rem 1.5rem"
+            borderRadius="12px"
+            gap="1.2rem"
+            padding="0.8rem 2rem"
+            boxShadow={2}
+            width="400px"
           >
-            <InputBase placeholder="Search..." sx={{ width: "100%" }} />
+            <InputBase
+              placeholder="Search..."
+              sx={{
+                width: "100%",
+                fontSize: "1rem",
+                padding: "0.5rem",
+              }}
+            />
             <Tooltip title="Search" arrow>
-              <IconButton>
+              <IconButton sx={{ color: neutral.dark }}>
                 <Search />
               </IconButton>
             </Tooltip>
@@ -112,10 +160,15 @@ const Navbar = () => {
       </FlexBetween>
 
       {isNonMobileScreens ? (
-        <FlexBetween gap="2rem">{commonMenu}</FlexBetween>
+        <FlexBetween gap="3rem">{commonMenu}</FlexBetween>
       ) : (
         <IconButton
           onClick={() => setIsMobileMenuToggled(!isMobileMenuToggled)}
+          sx={{
+            color: neutral.dark,
+            transition: "all 0.3s ease-in-out",
+            "&:hover": { backgroundColor: neutral.light },
+          }}
         >
           <Menu />
         </IconButton>
@@ -128,17 +181,20 @@ const Navbar = () => {
           bottom="0"
           height="100%"
           zIndex="10"
-          maxWidth="400px"
-          minWidth="300px"
-          backgroundColor={background}
+          maxWidth="350px"
+          minWidth="270px"
+          backgroundColor={background.paper}
           padding="1rem"
+          borderRadius="8px 0 0 8px"
+          boxShadow={4}
+          sx={{ transition: "transform 0.3s ease-in-out" }}
         >
           <Box display="flex" justifyContent="flex-end">
             <IconButton onClick={() => setIsMobileMenuToggled(false)}>
               <Close />
             </IconButton>
           </Box>
-          <FlexBetween flexDirection="column" alignItems="center" gap="1rem">
+          <FlexBetween flexDirection="column" alignItems="center" gap="1.5rem">
             {commonMenu}
           </FlexBetween>
         </Box>
